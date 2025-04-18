@@ -1,6 +1,6 @@
 {
   "name": "snapzip",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A fast image compression tool for JPEG and PNG files",
   "main": "index.js",
   "bin": {
