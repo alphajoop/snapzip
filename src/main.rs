@@ -7,13 +7,22 @@ use snapzip::{compress_jpeg, compress_png};
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    if args.len() != 3 {
-        eprintln!("{}", "❌ Usage: snapzip <input_image> <output_image>".red());
+    if args.len() < 2 || args.len() > 3 {
+        eprintln!("{}", "❌ Usage: snapzip <input_image> [output_image]".red());
         std::process::exit(1);
     }
 
     let input = &args[1];
-    let output = &args[2];
+
+    // Génération automatique du nom de sortie si non fourni
+    let output = if args.len() == 3 {
+        args[2].clone()
+    } else {
+        let path = Path::new(input);
+        let stem = path.file_stem().unwrap_or_default().to_string_lossy();
+        let ext = path.extension().unwrap_or_default().to_string_lossy();
+        format!("{}_compressed.{}", stem, ext)
+    };
 
     let ext = Path::new(input)
         .extension()
@@ -24,8 +33,8 @@ fn main() {
     println!("{}", "🔧 Compressing image...".yellow());
 
     let result = match ext.as_str() {
-        "png" => compress_png(input, output),
-        "jpg" | "jpeg" => compress_jpeg(input, output),
+        "png" => compress_png(input, &output),
+        "jpg" | "jpeg" => compress_jpeg(input, &output),
         _ => {
             eprintln!(
                 "{}",
@@ -52,6 +61,7 @@ fn main() {
                 percent,
                 duration
             );
+            println!("📁 Output file: {}", output.cyan());
         }
         Err(e) => {
             eprintln!("{} {}", "❌ Compression error:".red(), e);
