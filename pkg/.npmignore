@@ -1,0 +1,6 @@
+# Fichiers et dossiers à ignorer lors de la publication sur npm
+.git
+.github
+node_modules
+*.log
+*.tgz

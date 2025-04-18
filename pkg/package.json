@@ -1,0 +1,27 @@
+{
+  "name": "snapzip",
+  "version": "0.1.0",
+  "description": "A fast image compression tool for JPEG and PNG files",
+  "main": "index.js",
+  "bin": {
+    "snapzip": "./bin/snapzip.js"
+  },
+  "scripts": {
+    "postinstall": "node install.js"
+  },
+  "keywords": [
+    "image",
+    "compression",
+    "jpeg",
+    "png",
+    "optimizer"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "binary-install": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}

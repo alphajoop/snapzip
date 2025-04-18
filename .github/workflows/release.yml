@@ -1,0 +1,81 @@
+name: Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    name: Build release binaries
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            target: linux
+          - os: windows-latest
+            target: win64
+          - os: macos-latest
+            target: macos
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release
+
+      - name: Create release archive
+        run: |
+          mkdir -p dist
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            tar -czf dist/snapzip-${{ matrix.target }}.tar.gz -C target/release snapzip.exe
+          else
+            tar -czf dist/snapzip-${{ matrix.target }}.tar.gz -C target/release snapzip
+          fi
+        shell: bash
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist/snapzip-${{ matrix.target }}.tar.gz
+          asset_name: snapzip-${{ matrix.target }}.tar.gz
+          asset_content_type: application/gzip
+
+  publish:
+    name: Publish to npm
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: cd pkg && npm ci
+
+      - name: Update version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          cd pkg && npm version $VERSION --no-git-tag-version
+
+      - name: Publish to npm
+        run: cd pkg && npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
