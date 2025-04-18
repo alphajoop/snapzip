@@ -1,4 +1,4 @@
-const { install } = require("binary-install");
+const { install: installBinary } = require("binary-install");
 const os = require("os");
 const path = require("path");
 
@@ -31,13 +31,13 @@ const getBinaryName = () => {
   return os.type() === "Windows_NT" ? "snapzip.exe" : "snapzip";
 };
 
-const install = () => {
+const installPackage = () => {
   const url = getBinaryUrl();
   const name = getBinaryName();
 
   console.log(`Downloading snapzip binary from ${url}`);
 
-  return install(url, name);
+  return installBinary(url, name);
 };
 
-install();
+installPackage();
