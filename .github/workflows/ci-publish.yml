@@ -145,8 +145,25 @@ jobs:
 
       - name: 📥 Install deps
         run: |
-          cd pkg && pnpm install
-          cd pkg && pnpm build
+          # Vérifier la structure du répertoire
+          ls -la
+          if [ -d "pkg" ]; then
+            cd pkg
+            pnpm install
+            pnpm build
+          else
+            echo "Le répertoire pkg n'existe pas dans le répertoire actuel"
+            find . -type d -maxdepth 2
+            exit 1
+          fi
+
+      - name: 📁 Verify repository structure
+        run: |
+          ls -la
+          if [ ! -d "pkg" ]; then
+            echo "pkg directory not found in root, checking contents:"
+            find . -type d -maxdepth 2
+          fi
 
       - name: 📁 Create bin directory
         run: mkdir -p pkg/bin
