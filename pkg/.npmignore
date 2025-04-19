@@ -1,6 +1,10 @@
-# Fichiers et dossiers à ignorer lors de la publication sur npm
-.git
-.github
-node_modules
-*.log
-*.tgz
+src/
+target/
+Cargo.*
+tsconfig.json
+__tests__/
+tests/
+vitest.config.ts
+
+# Ne pas ignorer les binaires
+!bin/
