@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 // Utiliser require au lieu d'import pour éviter les problèmes de types
-const path = require('path');
-const childProcess = require('child_process');
-const fs = require('fs');
+const path = require("path");
+const childProcess = require("child_process");
+const fs = require("fs");
 
 // Déterminer le nom du binaire en fonction de la plateforme
 const getBinaryName = () => {
   const platform = process.platform;
   const arch = process.arch;
-  
+
   if (platform === "win32") {
     return `snapzip-${platform}-${arch}.exe`;
   } else {
@@ -22,7 +22,9 @@ const binaryPath = path.join(__dirname, "../bin", getBinaryName());
 
 // Vérifier si le binaire existe
 if (!fs.existsSync(binaryPath)) {
-  console.error(`Erreur: Binaire non trouvé pour votre plateforme (${process.platform}-${process.arch})`);
+  console.error(
+    `Erreur: Binaire non trouvé pour votre plateforme (${process.platform}-${process.arch})`
+  );
   console.error(`Chemin recherché: ${binaryPath}`);
   process.exit(1);
 }

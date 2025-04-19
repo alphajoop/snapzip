@@ -1,6 +1,6 @@
 {
   "name": "snapzip",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "A CLI tool to compress images (.jpg/.jpeg/.png) using Rust, now available on npm!",
   "bin": {
     "snapzip": "./lib/index.js"
@@ -11,8 +11,8 @@
     "test": "vitest run",
     "prebuild-binaries": "node scripts/ensure-dirs.js",
     "build-binaries": "npm run prebuild-binaries && node scripts/build-binaries.js",
-    "prepack": "npm run build && npm run build-binaries",
-    "release": "npm run prepack && pnpm version patch && git push && git push --follow-tags"
+    "prepack": "npm run build",
+    "release": "pnpm version patch && git push && git push --follow-tags"
   },
   "keywords": [
     "rust",
@@ -22,9 +22,6 @@
   ],
   "author": "Alpha Diop",
   "license": "MIT",
-  "dependencies": {
-    "@napi-rs/cli": "^2.15.1"
-  },
   "devDependencies": {
     "@types/node": "^22.14.1",
     "typescript": "^5.3.3",

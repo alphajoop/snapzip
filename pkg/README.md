@@ -55,7 +55,10 @@ snapzip uses:
 ## System requirements
 
 - **Node.js**: v12.0.0 or higher
-- **Supported operating systems**: Windows, macOS, Linux (x64)
+- **Supported operating systems**:
+  - Windows (x64)
+  - macOS (Intel x64 and Apple Silicon arm64)
+  - Linux (x64)
 
 ## Development
 
@@ -82,10 +85,38 @@ snapzip uses:
    ```
 
 3. Install npm dependencies
+
    ```bash
    cd pkg
    npm install
    ```
+
+4. Setup binaries for local testing
+   ```bash
+   # From the pkg directory
+   mkdir -p bin
+   # For Windows
+   cp ../target/release/snapzip.exe bin/snapzip-win32-x64.exe
+   # For macOS
+   # cp ../target/release/snapzip bin/snapzip-darwin-x64
+   # For Linux
+   # cp ../target/release/snapzip bin/snapzip-linux-x64
+   ```
+
+### Publishing
+
+This package uses GitHub Actions to automatically build binaries for all supported platforms and publish to npm.
+
+To publish a new version:
+
+1. Make your changes
+2. Create and push a new version tag:
+   ```bash
+   cd snapzip
+   git tag v0.1.5  # Increment version number
+   git push --tags
+   ```
+3. GitHub Actions will automatically build binaries for all platforms and publish to npm
 
 ## License
 
