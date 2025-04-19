@@ -41,10 +41,10 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: 🔧 Install deps
-        run: pnpm install
+        run: cd pkg && pnpm install
 
       - name: 🧪 Run Vitest
-        run: pnpm test
+        run: cd pkg && pnpm test
 
   build-binaries:
     name: 🔨 Build Rust Binaries
@@ -145,8 +145,8 @@ jobs:
 
       - name: 📥 Install deps
         run: |
-          pnpm install
-          pnpm build
+          cd pkg && pnpm install
+          cd pkg && pnpm build
 
       - name: 📁 Create bin directory
         run: mkdir -p pkg/bin
